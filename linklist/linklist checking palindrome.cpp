@@ -1,110 +1,85 @@
-#include<stdio.h>
-#include<stdlib.h>
-
-typedef struct node
-{
-	int data;
-	struct node *next;
-}node;
-
-node *reverse(node *head)   //reverse the string (second part)
-{
-node *p , *q;
-if(head == NULL)
-return head;
-p = head;
-q = p->next;
-if(q == NULL)
-return p;
-q = reverse(q);
-p->next->next = p;
-p->next = NULL;
-return q;
+#include<bits/stdc++.h>
+using namespace std;
+ 
+class Node {
+public:
+        int data;
+        Node(int d){
+            data = d;
+        }
+        Node *ptr;
+};
+ 
+// Function to check if the linked list
+// is palindrome or not
+bool isPalin(Node* head){
+         
+        // Temp pointer
+        Node* slow= head;
+ 
+        // Declare a stack
+        stack <int> s;
+  
+ 
+        // Push all elements of the list
+        // to the stack
+        while(slow != NULL){
+                s.push(slow->data);
+ 
+                // Move ahead
+                slow = slow->ptr;
+        }
+ 
+        // Iterate in the list again and
+        // check by popping from the stack
+        while(head != NULL ){
+             
+            // Get the top most element
+             int i=s.top();
+ 
+             // Pop the element
+             s.pop();
+ 
+             // Check if data is not
+             // same as popped element
+            if(head -> data != i){
+                return false;
+            }
+ 
+            // Move ahead
+           head=head->ptr;
+        }
+ 
+return true;
 }
-
-void check_palindrome(node *start)
-{
-	node *p , *q ,*first_start,*second_start;
-	p = start;
-	q = start;
-	
-	if(p->next == NULL)          // if there is only one character in the string
-	{
-		printf("It is a palindrome");
-		return;
-	}
-	//split the linked list
-	while(1)
-	{
-		p = p->next->next;
-		if(p == NULL)
-		{
-			second_start = q->next;
-			break;
-		}
-		if(p->next == NULL)
-		{
-			second_start = q->next->next;
-			break;
-		}		
-		q = q->next;		
-	}	
-	q->next = NULL;
-	//reverse the second linked list
-	second_start = reverse(second_start);	
-//	printf(" \n second start  =  %d",second_start->data);	
-	//now compare the splitted two linked lists
-	first_start = start;
-		
-	while(first_start!=NULL && second_start!=NULL) //compare the two strings
-	{		
-		if(first_start->data == second_start->data)
-		{
-			first_start = first_start->next;
-			second_start = second_start->next;
-		}
-		else
-		{
-			printf("\n Not a Palindrome");
-			break;				
-		}		
-	}	
-	printf("It is a palindrome");
-}
-
-
-int main()
-{	
-	int a , i , n , cnt , r;
-	node *p,*q,*start , *temp , *new_start;
-	printf("Enter the number of nodes");
-	scanf("%d",&n);
-	
-	if(n == 0)   //an empty string
-	{
-		printf("It is a Palindrome");
-		return 0;
-	}
-	
-	printf("Enter all the nodes separated by space \n");
-	p = (node*)malloc(sizeof(node));
-	scanf("%d",&a);
-	p->data = a;
-	p->next = NULL;
-	start = p; 
-	
-	
-	for(i=1;i<n;i++)
-	 	{
-		 	q = (node*)malloc(sizeof(node));
-			scanf("%d",&a);
-			q->data = a;
-			q->next = NULL;			 	
-		 	p->next = q;
-		 	p = p->next;		 	
-		}
-
-	check_palindrome(start);
-		
+ 
+// Driver Code
+int main(){
+ 
+    // Addition of linked list
+    Node one =  Node(1);
+    Node two = Node(2);
+    Node three = Node(3);
+    Node four = Node(2);
+    Node five = Node(1);
+ 
+    // Initialize the next pointer
+    // of every current pointer
+    five.ptr = NULL;
+    one.ptr = &two;
+    two.ptr = &three;
+    three.ptr = &four;
+    four.ptr = &five;
+    Node* temp = &one;
+ 
+     
+    // Call function to check palindrome or not
+    int result = isPalin(&one);
+   
+    if(result == 1)
+            cout<<"isPalindrome is true\n";
+    else
+        cout<<"isPalindrome is true\n";
+ 
 return 0;
 }
