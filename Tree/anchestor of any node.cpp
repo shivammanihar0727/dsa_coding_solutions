@@ -1,68 +1,76 @@
+// C++ program to print ancestors of given node
 #include<bits/stdc++.h>
+ 
 using namespace std;
-struct Bstnode{
-	int data;
-	Bstnode *left;
-	Bstnode *right;
+ 
+/* A binary tree node has data, pointer to left child
+   and a pointer to right child */
+struct node
+{
+   int data;
+   struct node* left;
+   struct node* right;
 };
-Bstnode *GetNewNode(int data)
+ 
+/* If target is present in tree, then prints the ancestors
+   and returns true, otherwise returns false. */
+bool printAncestors(struct node *root, int target)
 {
-	Bstnode *newnode=new Bstnode();
-	newnode->data=data;
-	newnode->left=newnode->right=NULL;
-	return newnode;
+  /* base cases */
+  if (root == NULL)
+     return false;
+ 
+  if (root->data == target)
+     return true;
+ 
+  /* If target is present in either left or right subtree of this node,
+     then print this node */
+  if ( printAncestors(root->left, target) ||
+       printAncestors(root->right, target) )
+  {
+    cout << root->data << " ";
+    return true;
+  }
+ 
+  /* Else return false */
+  return false;
 }
-Bstnode *Insert(Bstnode *root,int data)
+ 
+/* Helper function that allocates a new node with the
+   given data and NULL left and right pointers. */
+struct node* newnode(int data)
 {
-	if(root==NULL)
-	{
-		root=GetNewNode(data);
-		
-	}
-	else if(data<=root->data)
-	{
-		root->left=Insert(root->left,data);
-	}
-	else
-	{
-		root->right=Insert(root->right,data);
-	}
-	return root;
+  struct node* node = (struct node*)
+                       malloc(sizeof(struct node));
+  node->data = data;
+  node->left = NULL;
+  node->right = NULL;
+ 
+  return(node);
 }
-int  transverse(Bstnode *root,int val)
-{
-	if(root!=NULL)
-	{
-		if(root->data==val)
-		 return 1;
-		 
-		 if(transverse(root->left,val)||transverse(root->right,val))
-		 {
-		 	cout<<root->data<<" ";
-		 	return 1;
-		 }
-	}
-	return 0;
-	
-}
+ 
+/* Driver program to test above functions*/
 int main()
 {
-	Bstnode *root=NULL;
-	int n,a,i;
-	cout<<"Enter no. of nodes you want = ";
-	cin>>n;
-	cout<<"Enter the value of all the nodes = \n";
-	for(i=0;i<n;i++)
-	{
-		cin>>a;
-		root=Insert(root,a);
-	}
-	int val;
-	cout<<"Enter whose anchestor is to be find = ";
-	cin>>val;
-	int res=transverse(root,val);
-	if(res==0)
-	{
-		cout<<"No anchestor exist";
-	}
+ 
+  /* Construct the following binary tree
+              1
+            /   \
+          2      3
+        /  \
+      4     5
+     /
+    7
+  */
+  struct node *root = newnode(1);
+  root->left        = newnode(2);
+  root->right       = newnode(3);
+  root->left->left  = newnode(4);
+  root->left->right = newnode(5);
+  root->left->left->left  = newnode(7);
+ 
+  printAncestors(root, 7);
+ 
+  getchar();
+  return 0;
 }
